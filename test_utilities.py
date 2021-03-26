@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 
 def mistake_rate(sts, var_q):
     incor = 0
-    for i in xrange(len(sts)):
+    for i in range(len(sts)):
         pred = np.argmax(var_q[i,:])
         if pred != sts[i]:
             incor += 1
@@ -20,7 +20,7 @@ def plot_MAP(var_q, obs):
     colors = ['r', 'b', 'g']
     p = np.argmax(var_q[0])
     s = 0
-    for i in xrange(1, len(obs)):
+    for i in range(1, len(obs)):
         n = np.argmax(var_q[i])
         if n != p:
             plt.axvspan(s, i - 1, facecolor=colors[p], alpha=0.5)
@@ -38,7 +38,7 @@ def plot_bar(var_q, obs):
     colormap = []
     bounds = [0]
     p = np.argmax(var_q[0])
-    for i in xrange(1, len(obs)):
+    for i in range(1, len(obs)):
         n = np.argmax(var_q[i])
         if n != p:
             colormap.append(colors[p])
@@ -51,7 +51,7 @@ def plot_bar(var_q, obs):
 def plot_var_q(var_q, sts):
     t = np.arange(len(sts))
     var_q_true = []
-    for i in xrange(len(sts)):
+    for i in range(len(sts)):
         var_q_true.append(var_q[i][sts[i]])
 
     plt.fill_between(t, var_q_true)
@@ -67,7 +67,7 @@ def generate_rand_init(N):
 
 def generate_rand_tran(N):
     tran = np.random.randint(1, 10, N)
-    for i in xrange(N - 1):
+    for i in range(N - 1):
         tmp = np.random.randint(1, 10, N)
         tran = np.vstack((tran, tmp))
 
@@ -75,7 +75,7 @@ def generate_rand_tran(N):
 # }
 
 def generate_rand_mu(lo, hi, dim, n):
-    return [np.random.randint(lo, hi, dim) for i in xrange(n)]
+    return [np.random.randint(lo, hi, dim) for i in range(n)]
 
 def generate_rand_sig(lmbda, dof, n):
     # lmbda : The scale matrix, if we're generating an N x N covariance matrix
@@ -84,6 +84,6 @@ def generate_rand_sig(lmbda, dof, n):
     # dof : degrees of freedom
     #
     # n : The number of covariance matrices to generate
-    return [stats.sample_invwishart(lmbda, dof) for i in xrange(n)]
+    return [stats.sample_invwishart(lmbda, dof) for i in range(n)]
 
 

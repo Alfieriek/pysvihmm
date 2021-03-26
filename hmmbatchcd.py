@@ -132,7 +132,7 @@ class VBHMM(VariationalHMMBase):
 
         self.iter_time = np.nan*np.ones(maxit)
 
-        for it in xrange(maxit):
+        for it in range(maxit):
 
             start_time = time.time()
 
@@ -143,7 +143,7 @@ class VBHMM(VariationalHMMBase):
 
             lb = self.lower_bound()
             if self.verbose:
-                print "iter: %d, ELBO: %.2f" % (it, lb)
+                print("iter: %d, ELBO: %.2f" % (it, lb))
                 sys.stdout.flush()
 
             if np.allclose(lb, self.elbo, atol=epsilon):
@@ -180,10 +180,10 @@ class VBHMM(VariationalHMMBase):
 
         # Transition parameter updates
         self.var_tran = self.prior_tran.copy()
-        for t in xrange(1, self.T):
+        for t in range(1, self.T):
             self.var_tran += np.outer(self.var_x[t-1,:], self.var_x[t,:])
 
         # Emission parameter updates
         inds = np.logical_not(self.mask)
-        for k in xrange(self.K):
+        for k in range(self.K):
             self.var_emit[k].meanfieldupdate(self.obs[inds,:], self.var_x[inds,k])

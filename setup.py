@@ -8,13 +8,14 @@ from distutils.core import setup
 from distutils.extension import Extension
 from Cython.Distutils import build_ext
 
-args = sys.argv[1:]
+args = ['build_ext', '--inplace'] #sys.argv[1:]
+print(args)
 
 ext_names = ["hmm_fast", "fdr"]
 
 # Make a `cleanall` rule to get rid of intermediate and library files
 if "cleanall" in args:
-    print "Deleting cython files..."
+    print("Deleting cython files...")
     # Note that shell=True should be OK because the command is constant.
     # Just in case the build directory was created by accident, delete it
     for ext_name in ext_names:
@@ -39,7 +40,7 @@ for ext_name in ext_names:
                        ["%s.pyx" % ext_name],
                        include_dirs=[np.get_include()],
                        library_dirs=[],
-                       libraries=['m'],
+                       #libraries=['m'],
                        #extra_compile_args=["-g"],
                        #extra_link_args=["-g"]
                        extra_compile_args=["-O2"],
@@ -47,5 +48,4 @@ for ext_name in ext_names:
                        )
     
     # Pass all extensions created above in  list to ext_modules argument
-    setup(cmdclass={'build_ext': build_ext},
-          ext_modules=[cy_ext])
+    setup(cmdclass={'build_ext': build_ext},ext_modules=[cy_ext])

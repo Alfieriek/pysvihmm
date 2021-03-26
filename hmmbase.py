@@ -13,7 +13,7 @@ try:
 except ImportError:
     pass
 
-import cPickle as pkl
+import pickle as pkl
 import itertools
 
 from copy import deepcopy
@@ -23,7 +23,7 @@ from scipy.special import digamma, gammaln
 
 import scipy.spatial.distance as dist
 
-import hmm_fast
+#import hmm_fast ## this from a long arduous away
 import util
 
 # This is for taking logs of things so we don't get -inf
@@ -181,7 +181,7 @@ class VariationalHMMBase(object):
 
         # Emission distributions -- does both energy and entropy
         emit_vlb = 0.
-        for k in xrange(self.K):
+        for k in range(self.K):
             emit_vlb += self.var_emit[k].get_vlb()
 
         # Data term and entropy of states
@@ -248,7 +248,7 @@ class VariationalHMMBase(object):
 
         lalpha[0,:] = mod_init + lliks[0,:]
 
-        for t in xrange(1,self.T):
+        for t in range(1,self.T):
             lalpha[t] = np.logaddexp.reduce(lalpha[t-1] + np.log(A+eps).T, axis=1) + lliks[t]
 
         z = np.empty(T, dtype=np.int_)
@@ -256,7 +256,7 @@ class VariationalHMMBase(object):
         p = np.exp(lp)
         p /= np.sum(p)
         z[T-1] = np.random.choice(K, p=p)
-        for t in xrange(T-2, -1, -1):
+        for t in range(T-2, -1, -1):
             lp = lalpha[t,:] + np.log(A[:,z[t+1]]+eps)
             lp -= np.max(lp)
             z[t] = np.random.choice(K, p=p)
@@ -291,7 +291,7 @@ class VariationalHMMBase(object):
 
         lalpha[0,:] = self.mod_init + ll[0,:]
 
-        for t in xrange(1,self.T):
+        for t in range(1,self.T):
             lalpha[t] = np.logaddexp.reduce(lalpha[t-1] + ltran.T, axis=1) + ll[t]
 
     def backward_msgs(self, obs=None, mask=None):
@@ -315,7 +315,7 @@ class VariationalHMMBase(object):
         lbeta = self.lbeta
         lbeta[self.T-1,:] = 0.
 
-        for t in xrange(self.T-2,-1,-1):
+        for t in range(self.T-2,-1,-1):
             np.logaddexp.reduce(ltran + lbeta[t+1] + ll[t+1], axis=1,
                                 out=lbeta[t])
 
@@ -407,5 +407,4 @@ class VariationalHMMBase(object):
 
 
 # Add cython optimized methods
-VariationalHMMBase.ffbs_fast = \
-    types.MethodType(hmm_fast.FFBS, None, VariationalHMMBase)
+#VariationalHMMBase.ffbs_fast = types.MethodType(hmm_fast.FFBS, VariationalHMMBase)

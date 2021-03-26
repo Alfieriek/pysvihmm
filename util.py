@@ -168,7 +168,7 @@ def make_mask(sts, miss=0., left=0):
     K = np.unique(sts_l).shape[0]
     mask = np.zeros(len(sts), dtype='bool')
     if miss > 0.:
-        for k in xrange(K):
+        for k in range(K):
             obs_k = np.where(sts_l == k)[0]
 
             # Don't hold out data for this state if too few observations
@@ -178,7 +178,7 @@ def make_mask(sts, miss=0., left=0):
             # Number held out should be based on length of whole series
             nobs_k = np.ceil(miss*np.sum(sts == k))
             if obs_k.shape[0] < nobs_k:
-                print "Only %d observations in state %d, using fraction of that instead" % (obs_k.shape[0], k)
+                print("Only %d observations in state %d, using fraction of that instead" % (obs_k.shape[0], k))
                 nobs_k = np.ceil(miss*obs_k.shape[0])
             nobs_k = int(nobs_k)
 
@@ -257,16 +257,16 @@ def munkres_match(sts_true, sts_pred, K):
     #K_pred = unq_pred.shape[0]
 
     #DM = np.zeros((K_pred, K_true))
-    #for ei in xrange(K_pred):
+    #for ei in range(K_pred):
     #    iei = np.where(sts_pred == unq_pred[ei])[0]
-    #    for ti in xrange(K_true):
+    #    for ti in range(K_true):
     #        n_incorr = np.sum(sts_true[iei] == unq_true[ti])
     #        DM[ei,ti] = n_incorr
 
     DM = np.zeros((K, K))
-    for k in xrange(K):
+    for k in range(K):
         iei = np.where(sts_pred == k)[0]
-        for l in xrange(K):
+        for l in range(K):
             n_incorr = np.sum(sts_true[iei] == l)
             DM[k,l] = n_incorr
 
@@ -288,7 +288,7 @@ if __name__ == "__main__":
     match_munk = munkres_match(sts_true, sts_perm, K)
 
     t1 = np.all(sts_true == match_perm[sts_perm])
-    print "match_state_seq works? %s" % ("True" if t1 else "False",)
+    print("match_state_seq works? %s" % ("True" if t1 else "False",))
 
     t2 = np.all(sts_true == match_munk[sts_perm])
-    print "munkres_match works? %s" % ("True" if t2 else "False",)
+    print("munkres_match works? %s" % ("True" if t2 else "False",))

@@ -244,7 +244,7 @@ class VBHMM(VariationalHMMBase):
         c = npr.randint(ll, uu+1, 1)[0]
         minibatch.append(MetaObs(c-L,c+L))
 
-        for i in xrange(n):
+        for i in range(n):
             c = npr.randint(ll, uu+1, 1)[0]
             while np.any(np.abs(c_vec - c) <= L):
                 c = npr.randint(ll, uu+1, 1)[0]
@@ -290,7 +290,7 @@ class VBHMM(VariationalHMMBase):
 
         # Emission distributions -- does both energy and entropy
         emit_vlb = 0.
-        for k in xrange(self.K):
+        for k in range(self.K):
             emit_vlb += self.var_emit[k].get_vlb()
 
         return A_energy + A_entropy + emit_vlb
@@ -344,7 +344,7 @@ class VBHMM(VariationalHMMBase):
             raise RuntimeError("Cannot specify both adaptive and buffer simultaneously!")
 
 
-        for it in xrange(maxit):
+        for it in range(maxit):
             start_time = time.time()
 
             # Update learning rate, (t + tau)^{-kappa}
@@ -400,7 +400,7 @@ class VBHMM(VariationalHMMBase):
             A_inter = np.zeros_like(self.var_tran)
 
             emit_inter = [util.NIW_zero_nat_pars(self.var_emit[0])
-                          for k in xrange(K)]
+                          for k in range(K)]
 
             for data in minibatch:
 
@@ -429,7 +429,7 @@ class VBHMM(VariationalHMMBase):
                 
                 A_inter += A_i
 
-                for k in xrange(K):
+                for k in range(K):
                     emit_inter[k] += e_i[k]
 
                 # Approximate lower bound contribution of this meta-observation
@@ -445,7 +445,7 @@ class VBHMM(VariationalHMMBase):
             self.elbo_vec[it] = lb
 
             if self.verbose:
-                print "iter: %d, ELBO: %.2f" % (it, lb)
+                print("iter: %d, ELBO: %.2f" % (it, lb))
                 sys.stdout.flush()
 
             # Predictive log-probability for missing data in the
@@ -735,7 +735,7 @@ class VBHMM(VariationalHMMBase):
 
         lalpha[0,:] = mod_init + ll[0,:]
 
-        for t in xrange(loff+1,uoff+1):
+        for t in range(loff+1,uoff+1):
             lalpha[t-loff] = np.logaddexp.reduce(lalpha[t-loff-1] + ltran.T, axis=1) + ll[t-loff]
         return lalpha
 
@@ -764,7 +764,7 @@ class VBHMM(VariationalHMMBase):
         lbeta = np.empty((uoff-loff+1,self.K))
         lbeta[-1,:] = 0.
 
-        for t in reversed(xrange(loff, uoff)):
+        for t in reversed(range(loff, uoff)):
             np.logaddexp.reduce(ltran + lbeta[t-loff+1,:] + ll[t-loff+1], axis=1,
                                 out=lbeta[t-loff,:])
 
@@ -799,7 +799,7 @@ class VBHMM(VariationalHMMBase):
 
         lalpha[0,:] = self.mod_init + ll[0,:]
 
-        for t in xrange(loff+1,uoff+1):
+        for t in range(loff+1,uoff+1):
             lalpha[t-loff] = np.logaddexp.reduce(lalpha[t-loff-1] + ltran.T, axis=1) + ll[t-loff]
 
     def forward_msgs_real_data(self, lalpha_init=None):
@@ -820,7 +820,7 @@ class VBHMM(VariationalHMMBase):
         else:
             lalpha[0,:] = lalpha_init
 
-        for t in xrange(1,self.T):
+        for t in range(1,self.T):
             lalpha[t] = np.logaddexp.reduce(lalpha[t-1] + ltran.T, axis=1) + ll[t]
 
         return lalpha
@@ -850,7 +850,7 @@ class VBHMM(VariationalHMMBase):
         lbeta = self.lbeta
         lbeta[-1,:] = 0.
 
-        for t in reversed(xrange(loff, uoff)):
+        for t in reversed(range(loff, uoff)):
             np.logaddexp.reduce(ltran + lbeta[t-loff+1,:] + ll[t-loff+1], axis=1,
                                 out=lbeta[t-loff,:])
 
@@ -874,7 +874,7 @@ class VBHMM(VariationalHMMBase):
 
         # Mean-field update
         tran_mf = self.prior_tran.copy()
-        for t in xrange(loff, uoff+1):
+        for t in range(loff, uoff+1):
             tran_mf += np.outer(self.var_x[t-loff-1,:], self.var_x[t-loff,:])
 
         # Convert result to natural params -- this is the direction to follow
@@ -885,7 +885,7 @@ class VBHMM(VariationalHMMBase):
         emit_inter = list()
 
         if type(self.var_emit[0]) is Gaussian:
-            for k in xrange(self.K):
+            for k in range(self.K):
                 G = self.var_emit[k]
 
                 # Do mean-field update for this component
@@ -905,7 +905,7 @@ class VBHMM(VariationalHMMBase):
 
                 # Convert to natural parameters
         elif type(self.var_emit[0]) is Categorical:
-            for k in xrange(self.K):
+            for k in range(self.K):
                 G = self.var_emit[k]
 
                 w = self.var_x[inds,k]
@@ -954,7 +954,7 @@ class VBHMM(VariationalHMMBase):
 
         # Mean-field update
         tran_mf = self.prior_tran.copy()
-        for t in xrange(loff, uoff+1):
+        for t in range(loff, uoff+1):
             tran_mf += np.outer(var_x[t-loff-1,:], var_x[t-loff,:])
 
         # Convert result to natural params -- this is the direction to follow
@@ -965,7 +965,7 @@ class VBHMM(VariationalHMMBase):
         emit_inter = list()
 
         if type(self.var_emit[0]) is Gaussian:
-            for k in xrange(self.K):
+            for k in range(self.K):
                 G = self.var_emit[k]
 
                 # Do mean-field update for this component
@@ -985,7 +985,7 @@ class VBHMM(VariationalHMMBase):
 
                 # Convert to natural parameters
         elif type(self.var_emit[0]) is Categorical:
-            for k in xrange(self.K):
+            for k in range(self.K):
                 G = self.var_emit[k]
 
                 w = var_x[inds,k]
@@ -1048,7 +1048,7 @@ class VBHMM(VariationalHMMBase):
         bfact = (T-2*L-1) / ((2.*L+1.)*S)
 
         if type(self.var_emit[0]) is Gaussian:
-            for k in xrange(self.K):
+            for k in range(self.K):
                 G = self.var_emit[k]
 
                 # Convert current estimates to natural parameters
@@ -1069,7 +1069,7 @@ class VBHMM(VariationalHMMBase):
                 util.NIW_mf_moment_pars(G, *nats_new)
 
         elif type(self.var_emit[0]) is Categorical:
-            for k in xrange(self.K):
+            for k in range(self.K):
 
                 G = self.var_emit[k]
 
@@ -1180,7 +1180,7 @@ class VBHMM(VariationalHMMBase):
 
         lalpha[0,:] = mod_init + ll[0,:]
 
-        for t in xrange(1,self.T):
+        for t in range(1,self.T):
             lalpha[t] = np.logaddexp.reduce(lalpha[t-1] + ltran.T, axis=1) + ll[t]
 
         # Backward messages
@@ -1188,7 +1188,7 @@ class VBHMM(VariationalHMMBase):
 
         lbeta[self.T-1,:] = 0.
 
-        for t in xrange(self.T-2,-1,-1):
+        for t in range(self.T-2,-1,-1):
             np.logaddexp.reduce(ltran + lbeta[t+1] + ll[t+1], axis=1,
                                 out=lbeta[t])
 

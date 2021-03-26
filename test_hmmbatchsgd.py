@@ -35,7 +35,7 @@ def test_hmmbatchsgd():
 
     N = 1000
     obs = np.array([emit[int(np.round(i/N))].rvs()[0]
-                    for i in xrange(N)])
+                    for i in range(N)])
     
     mu_0 = np.zeros(D)
     sigma_0 = 0.75*np.cov(obs.T)
@@ -43,7 +43,7 @@ def test_hmmbatchsgd():
     nu_0 = 4
 
     prior_emit = [Gaussian(mu_0=mu_0, sigma_0=sigma_0, kappa_0=kappa_0, 
-                           nu_0=nu_0) for _ in xrange(K)]
+                           nu_0=nu_0) for _ in range(K)]
     prior_emit = np.array(prior_emit)
     prior_tran = np.ones(K*K).reshape((K,K))
     prior_init = np.ones(K)
@@ -52,9 +52,9 @@ def test_hmmbatchsgd():
     # 'Gaussian' object has no attribute '_posterior_hypparams'
     hmm.infer()
 
-    sts_true = np.array([int(np.round(i/N)) for i in xrange(N)])
+    sts_true = np.array([int(np.round(i/N)) for i in range(N)])
     # hamming distance
-    print 'Hamming Distance = ', hmm.hamming_dist(hmm.var_x, sts_true)[0]
+    print('Hamming Distance = ', hmm.hamming_dist(hmm.var_x, sts_true)[0])
 
     # plot learned emissions over observations
     util.plot_emissions(obs, prior_emit, hmm.var_emit)
