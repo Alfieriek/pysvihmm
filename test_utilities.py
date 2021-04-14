@@ -2,6 +2,7 @@ from __future__ import division
 
 import numpy as np
 import matplotlib.pyplot as plt
+import scipy.stats as stats # Dan Added 04/13/2021
 
 
 def mistake_rate(sts, var_q):

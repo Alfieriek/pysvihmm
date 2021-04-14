@@ -645,8 +645,8 @@ class VBHMM(VariationalHMMBase):
                     #otherwise, proceed and grow the metaobs
                     bufferL += Lincrement
 
-                    q_new_left = self.get_marginal( var_new , bufferL - halfL)
-                    q_new_right = self.get_marginal( var_new , bufferL + halfL)
+                    q_new_left = self.get_marginal(var_new, bufferL - halfL)
+                    q_new_right = self.get_marginal(var_new, bufferL + halfL)
 
                     q_running_old_left = q_running_av_left
                     q_running_old_right = q_running_av_right

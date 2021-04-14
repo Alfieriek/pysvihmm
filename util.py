@@ -34,7 +34,7 @@ def NIW_mf_natural_pars(mu, sigma, kappa, nu):
     # actually stable.
     #eta3 = sigma + np.outer(mu, mu) / kappa
     eta3 = sigma + np.outer(mu, mu) * kappa
-    return np.array([kappa * mu, kappa, eta3, nu + 2 + p])
+    return np.array([kappa * mu, kappa, eta3, nu + 2 + p],dtype=object)
 
 
 def NIW_mf_moment_pars(G, e1, e2, e3, e4):
@@ -67,7 +67,7 @@ def NIW_meanfield(G, data, weights):
     D = len(G.mu_0)
     mu_mf, sigma_mf, kappa_mf, nu_mf = \
         G._posterior_hypparams(*G._get_weighted_statistics(data,weights,D))
-    return np.array([mu_mf, sigma_mf, kappa_mf, nu_mf])
+    return np.array([mu_mf, sigma_mf, kappa_mf, nu_mf],dtype=object) #Dan added 04/13/2021
 
 
 def NIW_suffstats(G, data, weights):
