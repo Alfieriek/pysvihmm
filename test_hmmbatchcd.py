@@ -2,10 +2,9 @@ from __future__ import division
 
 import numpy as np
 import matplotlib.pyplot as plt
-import util
-import hmmbatchcd as HMM
 
-from scipy.spatial.distance import hamming as hd
+import hmmbatchcd as HMM
+import util
 from pybasicbayes.distributions import Gaussian
 from util import *
 
